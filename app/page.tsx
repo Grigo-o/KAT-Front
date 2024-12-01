@@ -1,101 +1,148 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { useTickets } from "./context/TicketsContext";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const locations = ["Kutaisi Airport", "Tourism Center", "KIU", "Mall", "City Center"];
+  const ticketPrice = 10.50;
+  const maxTickets = 3;
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [date, setDate] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const [total, setTotal] = useState(ticketPrice);
+
+
+  const { addTicket } = useTickets();
+
+  const handlePurchase = () => {
+    if (!from || !to) {
+      alert("Please select both a departure and destination location.");
+      return;
+    }
+    if (!date) {
+      alert("Please select a date for your ticket.");
+      return;
+    }
+    if (from === to) {
+      alert("Departure and destination cannot be the same.");
+      return;
+    }
+    const ticket = { from, to, date, quantity, total };
+    addTicket(ticket);
+    alert(`Successfully purchased ${quantity} ticket(s) from ${from} to ${to} on ${date} for ₾${total}`);
+  };
+
+  const handleQuantityChange = (newQuantity: number) => {
+    setQuantity(newQuantity);
+    setTotal(newQuantity * ticketPrice);
+  };
+
+  return (
+    <div className="bg-gray-100">
+      <div className="bg-[url('/kat.jpg')] bg-cover bg-center bg-no-repeat h-72 flex justify-center items-center w-full">
+        <div className="w-5/6 h-1/2 bg-white rounded-xl px-8 py-4 flex items-center justify-between">
+          <div className="flex justify-between mb-4">
+            <div className="flex flex-col w-64 pr-2">
+              <label htmlFor="from" className="mb-2 text-sm font-semibold">From:</label>
+              <select
+                id="from"
+                value={from}
+                onChange={(e) => setFrom(e.target.value)}
+                className="border rounded p-2"
+              >
+                <option value="">Select Location</option>
+                {locations.map((location, index) => (
+                  <option key={index} value={location}>{location}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col w-64 pl-2">
+              <label htmlFor="to" className="mb-2 text-sm font-semibold">To:</label>
+              <select
+                id="to"
+                value={to}
+                onChange={(e) => setTo(e.target.value)}
+                className="border rounded p-2"
+              >
+                <option value="">Select Location</option>
+                {locations.map((location, index) => (
+                  <option key={index} value={location}>{location}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="flex flex-col w-50 justify-between mb-4">
+            <label htmlFor="date" className="text-sm mb-2 font-semibold">Date:</label>
+            <input
+              id="date"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="border rounded py-1.5 px-2"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+          <div className="flex flex-col w-64 justify-between mb-4">
+            <label htmlFor="quantity" className="text-sm mb-2 font-semibold">Quantity:</label>
+            <select
+              id="quantity"
+              value={quantity}
+              onChange={(e) => handleQuantityChange(Number(e.target.value))}
+              className="border rounded p-2"
+            >
+              {[...Array(maxTickets)].map((_, i) => (
+                <option key={i} value={i + 1}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <div className="flex justify-between items-center">
+              <span className="">Total :&nbsp;</span>
+              <span className="font-semibold text-lg">{total}₾</span>
+            </div>
+            <button
+              onClick={handlePurchase}
+              className="bg-green-500 text-white flex items-center justify-center py-3 mt-2 rounded hover:bg-green-600"
+            >
+              Buy
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+      <div className="flex flex-col items-center p-5">
+        <h2 className="text-3xl font-semibold mb-8 mt-2">Popular Tickets</h2>
+        <div className="flex flex-col items-center w-full gap-y-6">
+          {[
+            { from: "Kutaisi Airport", to: "City Center", duration: "30 mins", price: "₾10" },
+            { from: "Tourism Center", to: "Mall", duration: "45 mins", price: "₾15" },
+            { from: "KIU", to: "Tourism Center", duration: "20 mins", price: "₾8" },
+            { from: "City Center", to: "Mall", duration: "25 mins", price: "₾12" },
+            { from: "Kutaisi Airport", to: "KIU", duration: "15 mins", price: "₾7" },
+            { from: "Mall", to: "Tourism Center", duration: "35 mins", price: "₾14" },
+          ].map((ticket, index) => (
+            <div
+              key={index}
+              className="bg-white w-3/4 rounded-xl h-40 shadow-md flex flex-col justify-center py-4 px-8 duration-200 hover:shadow-lg"
+            >
+              <h1 className="text-xl font-bold mb-2">
+                {ticket.from} ➡ {ticket.to}
+              </h1>
+              <p className="text-sm">
+                <span className="font-semibold">Duration:</span> {ticket.duration}
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Price:</span> {ticket.price}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+
     </div>
   );
 }
