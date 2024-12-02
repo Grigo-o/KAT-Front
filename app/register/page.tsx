@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
+import { fetchCsrfToken } from "../utils/apiUtils";
 
 interface FormState {
     email: string;
-    name: string;
+    first_name: string;
+    last_name: string;
     password: string;
     confirmPassword: string;
 }
@@ -12,7 +14,8 @@ interface FormState {
 export default function Register() {
     const [form, setForm] = useState<FormState>({
         email: "",
-        name: "",
+        first_name: "",
+        last_name: "",
         password: "",
         confirmPassword: "",
     });
@@ -22,18 +25,37 @@ export default function Register() {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         if (form.password !== form.confirmPassword) {
             setMessage("Passwords do not match.");
             return;
         }
-        if (form.password.length < 6) {
-            setMessage("Password must be at least 6 characters.");
-            return;
+        try {
+            await fetchCsrfToken();
+
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: form.email,
+                    first_name: form.first_name,
+                    last_name: form.last_name,
+                    password: form.password,
+                    password_confirmation: form.confirmPassword,
+                }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                setMessage("Please verify your email via the validation link.");
+            } else {
+                setMessage(data.message || "Registration failed.");
+            }
+        } catch (error) {
+            console.error(error);
+            setMessage("An error occurred during registration.");
         }
-        setMessage("Please verify your email via the validation link.");
-        // Api call 
     };
 
     return (
@@ -54,16 +76,29 @@ export default function Register() {
                         className="w-full border px-3 py-2 rounded"
                     />
                 </div>
-                <div className="mb-4">
-                    <label className="block mb-1 text-sm font-medium">Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full border px-3 py-2 rounded"
-                    />
+                <div className="flex justify-between">
+                    <div className="mb-4">
+                        <label className="block mb-1 text-sm font-medium">First Name</label>
+                        <input
+                            type="text"
+                            name="first_name"
+                            value={form.first_name}
+                            onChange={handleChange}
+                            required
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block mb-1 text-sm font-medium">Last Name</label>
+                        <input
+                            type="text"
+                            name="last_name"
+                            value={form.last_name}
+                            onChange={handleChange}
+                            required
+                            className="w-full border px-3 py-2 rounded"
+                        />
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label className="block mb-1 text-sm font-medium">Password</label>

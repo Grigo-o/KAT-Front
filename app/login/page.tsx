@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
+import { fetchCsrfToken } from "../utils/apiUtils";
 
 interface LoginFormState {
     email: string;
@@ -15,10 +16,33 @@ export default function Login() {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        // Api login call
-        setMessage("Login successful!");
+
+        try {
+
+            await fetchCsrfToken();
+
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: form.email,
+                    password: form.password,
+                }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem("accessToken", data.access_token);
+                setMessage("Login successful!");
+            } else {
+                setMessage(data.message || "Login failed. Please check your credentials.");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            setMessage("An error occurred during login. Please try again.");
+        }
     };
 
     return (

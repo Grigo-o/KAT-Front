@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 interface Ticket {
     from: string;
@@ -12,7 +12,7 @@ interface Ticket {
 
 interface TicketsContextValue {
     tickets: Ticket[];
-    addTicket: (ticket: Ticket) => void;
+    fetchTickets: () => void;
 }
 
 const TicketsContext = createContext<TicketsContextValue | undefined>(undefined);
@@ -24,12 +24,39 @@ interface TicketsProviderProps {
 export function TicketsProvider({ children }: TicketsProviderProps) {
     const [tickets, setTickets] = useState<Ticket[]>([]);
 
-    const addTicket = (ticket: Ticket) => {
-        setTickets((prevTickets) => [...prevTickets, ticket]);
+    const fetchTickets = async () => {
+        try {
+            const token = localStorage.getItem("accessToken");
+
+            if (!token) {
+                console.log("User is not authenticated");
+                return;
+            }
+
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-user-purchases`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setTickets(data);
+            } else {
+                console.log(data.message || "Failed to fetch tickets");
+            }
+        } catch (error) {
+            console.error("Error fetching tickets:", error);
+        }
     };
 
+    useEffect(() => {
+        fetchTickets();
+    }, []);
+
     return (
-        <TicketsContext.Provider value={{ tickets, addTicket }}>
+        <TicketsContext.Provider value={{ tickets, fetchTickets }}>
             {children}
         </TicketsContext.Provider>
     );

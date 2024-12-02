@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTickets } from "./context/TicketsContext";
+import { fetchCsrfToken } from "./utils/apiUtils";
 
 export default function Home() {
   const locations = ["Kutaisi Airport", "Tourism Center", "KIU", "Mall", "City Center"];
@@ -15,9 +16,9 @@ export default function Home() {
   const [total, setTotal] = useState(ticketPrice);
 
 
-  const { addTicket } = useTickets();
+  const { tickets, fetchTickets } = useTickets();
 
-  const handlePurchase = () => {
+  const handlePurchase = async () => {
     if (!from || !to) {
       alert("Please select both a departure and destination location.");
       return;
@@ -30,9 +31,36 @@ export default function Home() {
       alert("Departure and destination cannot be the same.");
       return;
     }
-    const ticket = { from, to, date, quantity, total };
-    addTicket(ticket);
-    alert(`Successfully purchased ${quantity} ticket(s) from ${from} to ${to} on ${date} for ₾${total}`);
+
+    try {
+      const token = localStorage.getItem("accessToken");
+      await fetchCsrfToken();
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/buy-ticket`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          schedule_id: 1, // replace with dynamic schedule id
+          start_stop_id: locations.indexOf(from) + 1,
+          end_stop_id: locations.indexOf(to) + 1,
+          quantity,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        fetchTickets();
+        alert(`Successfully purchased ${quantity} ticket(s) from ${from} to ${to} on ${date} for ₾${total}`);
+      } else {
+        alert(data.message || "Purchase failed.");
+      }
+    } catch (error) {
+      console.error("Purchase error:", error);
+      alert("An error occurred during purchase.");
+    }
   };
 
   const handleQuantityChange = (newQuantity: number) => {
