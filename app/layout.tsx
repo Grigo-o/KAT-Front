@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
 
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full hydrated">
       <head>
         <script
           type="module"
