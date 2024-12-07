@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
-import { getCsrf } from "@/api/auth";
+import { getCsrf } from "@/app/utils/auth";
 import httpClient from "@/axios";
 
 

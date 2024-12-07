@@ -2,7 +2,7 @@
 
 import { useState, ChangeEvent, FormEvent } from "react";
 import { fetchCsrfToken } from "../utils/apiUtils";
-import {getCsrf} from "@/api/auth";
+import { getCsrf } from "@/app/utils/auth";
 import httpClient from "@/axios";
 interface FormState {
     email: string;
@@ -28,20 +28,19 @@ export default function Register() {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        try
-        {
-            await getCsrf();    
-            httpClient.post('/register',{
+        try {
+            await getCsrf();
+            httpClient.post('/register', {
                 email: form.email,
                 first_name: form.first_name,
                 last_name: form.last_name,
                 password: form.password,
                 password_confirmation: form.confirmPassword,
             })
-            .then((apiResponse) => {
-                console.log(apiResponse.data);
-            })
-            .catch((error) => console.error(error));
+                .then((apiResponse) => {
+                    console.log(apiResponse.data);
+                })
+                .catch((error) => console.error(error));
         } catch (error) {
             console.error(error);
             setMessage("An error occurred during registration.");
@@ -58,7 +57,7 @@ export default function Register() {
         //         method: "GET",
         //         credentials: "include", // Ensures cookies are included
         //     });
-    
+
         //     const cookies = document.cookie
         //         .split('; ')
         //         .find((row) => row.startsWith('XSRF-TOKEN='))
