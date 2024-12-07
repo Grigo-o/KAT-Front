@@ -2,7 +2,8 @@
 
 import { useState, ChangeEvent, FormEvent } from "react";
 import { fetchCsrfToken } from "../utils/apiUtils";
-
+import {getCsrf} from "@/api/auth";
+import httpClient from "@/axios";
 interface FormState {
     email: string;
     first_name: string;
@@ -27,35 +28,70 @@ export default function Register() {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        if (form.password !== form.confirmPassword) {
-            setMessage("Passwords do not match.");
-            return;
-        }
-        try {
-            await fetchCsrfToken();
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email: form.email,
-                    first_name: form.first_name,
-                    last_name: form.last_name,
-                    password: form.password,
-                    password_confirmation: form.confirmPassword,
-                }),
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                setMessage("Please verify your email via the validation link.");
-            } else {
-                setMessage(data.message || "Registration failed.");
-            }
+        try
+        {
+            await getCsrf();    
+            httpClient.post('/register',{
+                email: form.email,
+                first_name: form.first_name,
+                last_name: form.last_name,
+                password: form.password,
+                password_confirmation: form.confirmPassword,
+            })
+            .then((apiResponse) => {
+                console.log(apiResponse.data);
+            })
+            .catch((error) => console.error(error));
         } catch (error) {
             console.error(error);
             setMessage("An error occurred during registration.");
         }
+
+        // if (form.password !== form.confirmPassword) {
+        //     setMessage("Passwords do not match.");
+        //     return;
+        // }
+        // try {
+        //     // await fetchCsrfToken();  
+        //     // Step 1: Fetch CSRF cookie
+        //     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sanctum/csrf-cookie`, {
+        //         method: "GET",
+        //         credentials: "include", // Ensures cookies are included
+        //     });
+    
+        //     const cookies = document.cookie
+        //         .split('; ')
+        //         .find((row) => row.startsWith('XSRF-TOKEN='))
+        //         ?.split('=')[1];
+
+        //     console.log(cookies);
+
+        //     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register`, {
+        //         method: "POST",
+        //         headers: {
+        //             'Accept': 'application/json',
+        //             'Content-Type': 'application/json',
+        //             'X-XSRF-TOKEN': cookies || '',
+        //         },
+        //         credentials: 'include', // Ensure cookies are sent
+        //         body: JSON.stringify({
+        //             email: form.email,
+        //             name: form.first_name,
+        //             password: form.password,
+        //             password_confirmation: form.confirmPassword,
+        //         }),
+        //     });
+
+        //     const data = await response.json();
+        //     if (response.ok) {
+        //         setMessage("Please verify your email via the validation link.");
+        //     } else {
+        //         setMessage(data.message || "Registration failed.");
+        //     }
+        // } catch (error) {
+        //     console.error(error);
+        //     setMessage("An error occurred during registration.");
+        // }
     };
 
     return (
