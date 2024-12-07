@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
-import { fetchCsrfToken } from "../utils/apiUtils";
+import { getCsrf } from "@/api/auth";
+import httpClient from "@/axios";
+
 
 interface LoginFormState {
     email: string;
@@ -21,24 +23,15 @@ export default function Login() {
 
         try {
 
-            await fetchCsrfToken();
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email: form.email,
-                    password: form.password,
-                }),
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                localStorage.setItem("accessToken", data.access_token);
-                setMessage("Login successful!");
-            } else {
-                setMessage(data.message || "Login failed. Please check your credentials.");
-            }
+            await getCsrf();
+            httpClient.post('/login', {
+                email: form.email,
+                password: form.password,
+            })
+                .then((apiResponse) => {
+                    console.log(apiResponse.data);
+                })
+                .catch((error) => console.error(error));
         } catch (error) {
             console.error("Login error:", error);
             setMessage("An error occurred during login. Please try again.");
