@@ -3,6 +3,8 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { getCsrf } from "@/app/utils/auth";
 import httpClient from "@/axios";
+import { useRouter } from "next/navigation";
+
 
 
 interface LoginFormState {
@@ -13,6 +15,7 @@ interface LoginFormState {
 export default function Login() {
     const [form, setForm] = useState<LoginFormState>({ email: "", password: "" });
     const [message, setMessage] = useState<string>("");
+    const router = useRouter();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -30,13 +33,12 @@ export default function Login() {
             });
 
             const token = apiResponse.data.access_token; // Extract the token from the response
-            
 
             // Store the token (choose appropriate storage)
             localStorage.setItem('access_token', token); // Use SessionStorage for shorter sessions if needed
-            
-            setMessage("Login successful!");
 
+            setMessage("Login successful!");
+            router.push("/profile");
         } catch (error) {
             console.error("Login error:", error);
             setMessage("An error occurred during login. Please try again.");
