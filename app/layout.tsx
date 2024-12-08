@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
 
   return (
-    <html lang="en" className="h-full hydrated">
+    <html lang="en" className="h-full hydrated" suppressHydrationWarning >
       <head>
         <script
           type="module"
@@ -33,7 +33,9 @@ export default function RootLayout({
               <h2 className="text-4xl font-serif text-white">KAT</h2>
               <Navbar />
               <button className="py-0 pl-10 flex">
-                <ion-icon name="log-out-outline" className="text-white text-3xl"></ion-icon>
+                <ion-icon
+                  // name="log-out-outline" 
+                  className="text-white text-3xl"></ion-icon>
               </button>
             </header>
           </div>

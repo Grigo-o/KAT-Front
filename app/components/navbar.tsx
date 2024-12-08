@@ -25,7 +25,10 @@ export default function Navbar() {
                     >
                         <Link href={item.href}>
                             <span className="icon">
-                                <ion-icon name={item.icon}></ion-icon>
+                                <ion-icon
+                                //  name={item.icon}
+
+                                ></ion-icon>
                             </span>
                             <span className="text">{item.name}</span>
                         </Link>
@@ -41,4 +44,3 @@ export default function Navbar() {
         </div>
     );
 }
-    
