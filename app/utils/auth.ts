@@ -12,7 +12,7 @@ function getCsrf(): Promise<AxiosResponse> {
 //     email: string;
 //     name: string;
 //     password: string;
-//     password_confirmation: string;
+//     password_confirmation  : string;
 //   }
 // ): Promise<AxiosResponse> {
 //   return httpClient.post('/api/register', payload);

@@ -23,15 +23,20 @@ export default function Login() {
 
         try {
 
-            await getCsrf();
-            httpClient.post('/login', {
+            await getCsrf(); // Ensure CSRF protection if necessary
+            const apiResponse = await httpClient.post('/login', {
                 email: form.email,
                 password: form.password,
-            })
-                .then((apiResponse) => {
-                    console.log(apiResponse.data);
-                })
-                .catch((error) => console.error(error));
+            });
+
+            const token = apiResponse.data.access_token; // Extract the token from the response
+            
+
+            // Store the token (choose appropriate storage)
+            localStorage.setItem('access_token', token); // Use SessionStorage for shorter sessions if needed
+            
+            setMessage("Login successful!");
+
         } catch (error) {
             console.error("Login error:", error);
             setMessage("An error occurred during login. Please try again.");
