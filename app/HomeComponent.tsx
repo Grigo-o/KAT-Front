@@ -117,7 +117,7 @@ export default function HomeComponent({
 
     useEffect(() => {
         fetchSchedules()
-    }, [null]);
+    }, [date]);
 
 
 
