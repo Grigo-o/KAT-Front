@@ -11,8 +11,8 @@ interface User {
 
 interface UserContextValue {
   user: User | null;
+  setUser: (user: User | null) => void;
   fetchUser: () => void;
-  
 }
 
 const UserContext = createContext<UserContextValue | undefined>(undefined);
@@ -25,14 +25,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
       const token = localStorage.getItem("access_token");
     
       if (!token) {
-        console.log(`calling user fetchUser: without token`);
-        
         console.log("User is not authenticated");
+        setUser(null);
         return;
       }
-        console.log(`calling user fetchUser: with token user_id: ${localStorage.getItem("user_id")}`);
 
-    
       const user_id = localStorage.getItem("user_id");
 
       const response = await httpClient.get(`/user/${user_id}`, {
@@ -44,6 +41,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       setUser(response.data);
     } catch (error) {
       console.error("Error fetching user:", error);
+      setUser(null);
     }
   };
 
@@ -52,7 +50,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, fetchUser }}>
+    <UserContext.Provider value={{ user, setUser, fetchUser }}>
       {children}
     </UserContext.Provider>
   );
