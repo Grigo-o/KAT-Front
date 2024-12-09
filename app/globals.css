@@ -2,14 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 :root {
@@ -94,14 +93,14 @@ body {
   top: -50%;
   width: 70px;
   height: 70px;
-  background: #29fd53;
+  background: #ffae00;
   border-radius: 50%;
   border: 6px solid var(--clr);
   transition: 0.5s;
 }
 
 .indicator::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: -22px;
@@ -113,7 +112,7 @@ body {
 }
 
 .indicator::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   right: -22px;
@@ -122,4 +121,8 @@ body {
   background: transparent;
   border-top-left-radius: 20px;
   box-shadow: -1px -10px 0 0 var(--clr);
+}
+
+.page-title {
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.8);
 }
