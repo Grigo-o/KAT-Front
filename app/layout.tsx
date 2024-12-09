@@ -2,6 +2,7 @@ import "./globals.css";
 import { Metadata } from "next";
 import Navbar from "./components/navbar";
 import { TicketsProvider } from "./context/TicketsContext";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "KAT",
@@ -13,35 +14,37 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
-    <html lang="en" className="h-full hydrated" suppressHydrationWarning >
+    <html lang="en" className="h-full" suppressHydrationWarning>
       <head>
-        <script
+        <Script
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-        ></script>
-        <script
+        />
+        <Script
           noModule
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-        ></script>
+        />
       </head>
       <body className="min-h-screen h-full w-full flex-col justify-start bg-gray-100 text-gray-900">
         <TicketsProvider>
           <div className="w-full bg-gray-100">
             <header className="flex justify-between pt-10 pb-2 px-8 bg-blue-500">
-              <h2 className="text-4xl font-serif text-white">KAT</h2>
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Kutaisi_International_Airport_logo.svg/640px-Kutaisi_International_Airport_logo.svg.png"
+                alt="logo"
+                className="h-20 pb-6"
+              />{" "}
               <Navbar />
               <button className="py-0 pl-10 flex">
                 <ion-icon
-                  // name="log-out-outline" 
-                  className="text-white text-3xl"></ion-icon>
+                  name="log-out-outline"
+                  className="text-white text-3xl pt-2 pl-20"
+                ></ion-icon>
               </button>
             </header>
           </div>
-          <main className="flex-col w-full h-full">
-            {children}
-          </main>
+          <main className="flex-col w-full h-full">{children}</main>
         </TicketsProvider>
       </body>
     </html>
