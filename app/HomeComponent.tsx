@@ -230,10 +230,10 @@ export default function HomeComponent({
                                             {ss.arrival_time}-{ss.departure_time}
                                         </button>
                                     </div>
-                                ))}
+                                ))} 
                             </div>
                         )}
-                        {from && to && schedules.length === 0 && (
+                        {from && to && date && schedules.length === 0 && (
                             <div className="border-t pt-6 pb-4" >
                                 No schedules available for the selected date.
                             </div>

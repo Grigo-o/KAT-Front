@@ -6,5 +6,3 @@ export default async function HomePage() {
 
   return <HomeComponent locations={locations} />
 }
-
-
