@@ -132,15 +132,22 @@ export default function HomeComponent({
         <div className="bg-[url('/kat2.jpg')] bg-cover bg-center bg-no-repeat h-96 flex flex-col items-center justify-between pb-4 pt-12 w-full">
           <div className="w-2/3 flex flex-col items-start">
             <h2 className="text-white text-4xl font-bold page-title mb-2">
-              Book Affordable Tickets from Kutaisi Airport
+              Book Affordable Tickets From Kutaisi Airport
             </h2>
             <h3 className="text-white text-2xl page-title">
               Easily find and compare the best bus tickets from Kutaisi Airport
               for your next journey.
             </h3>
           </div>
-          <div className="bg-white rounded-xl px-8 py-4 h-1/3 w-2/3 flex flex-col">
+          <div
+            className={`bg-white rounded-xl px-8 py-4 w-2/3 flex flex-col transition-all duration-300 ${
+              schedules.length > 0 || (from && to && schedules.length === 0)
+                ? "h-auto"
+                : "h-1/3"
+            }`}
+          >
             <div className="h-full flex items-center gap-x-4 pt-2 pb-2 w-full">
+              {/* Ticket Selection Components */}
               <div className="flex justify-between gap-x-4 w-2/5">
                 <div className="flex flex-col w-1/2">
                   <select
@@ -201,6 +208,7 @@ export default function HomeComponent({
                   </select>
                 </div>
               </div>
+              {/* Date Selection */}
               <div className="flex flex-col w-1/5 justify-between">
                 <input
                   id="date"
@@ -210,6 +218,7 @@ export default function HomeComponent({
                   className="w-full border rounded h-12 px-2 bg-white text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 />
               </div>
+              {/* Quantity */}
               <div className="flex flex-col w-1/5 justify-between">
                 <select
                   id="quantity"
@@ -232,6 +241,7 @@ export default function HomeComponent({
                   ))}
                 </select>
               </div>
+              {/* Total Price */}
               <div className="flex w-1/5 gap-x-4">
                 <div className="">
                   <label htmlFor="total" className=""></label>
@@ -243,6 +253,7 @@ export default function HomeComponent({
                     className="bg-gray-100 border border-gray-300 px-2 h-12 w-full rounded focus:outline-none cursor-not-allowed"
                   />
                 </div>
+                {/* Buy Button */}
                 <div className="flex">
                   <button
                     disabled={
@@ -256,8 +267,9 @@ export default function HomeComponent({
                 </div>
               </div>
             </div>
+            {/* Schedules Section */}
             {schedules.length > 0 && (
-              <div className="border-t pt-6 pb-4 flex items-center gap-4 flex-wrap ">
+              <div className="border-t pt-6 pb-4 flex items-center gap-4 flex-wrap">
                 {schedules.map((ss, index) => (
                   <div
                     key={ss.id}
@@ -286,7 +298,7 @@ export default function HomeComponent({
         </div>
       </div>
       <div className="flex flex-col items-center p-5">
-        <h2 className="text-3xl font-semibold mb-8 mt-2">Popular Tickets</h2>
+        <h2 className="text-4xl mb-8 mt-2">Popular Tickets</h2>
         <div className="flex flex-col items-center w-full gap-y-6">
           {[
             {
@@ -294,55 +306,123 @@ export default function HomeComponent({
               to: "City Center",
               duration: "30 mins",
               price: "₾10",
+              image: "center.jpeg",
             },
             {
-              from: "Tourism Center",
+              from: "Kutaisi Airport",
               to: "Mall",
               duration: "45 mins",
               price: "₾15",
+              image: "mall.jpg",
             },
             {
               from: "KIU",
-              to: "Tourism Center",
+              to: "Kutaisi Airport",
               duration: "20 mins",
               price: "₾8",
-            },
-            {
-              from: "City Center",
-              to: "Mall",
-              duration: "25 mins",
-              price: "₾12",
+              image: "kat.jpg",
             },
             {
               from: "Kutaisi Airport",
               to: "KIU",
               duration: "15 mins",
               price: "₾7",
+              image: "kiu.jpg",
             },
             {
-              from: "Mall",
+              from: "Kutaisi Airport",
               to: "Tourism Center",
               duration: "35 mins",
               price: "₾14",
+              image: "tourism.jpg",
             },
           ].map((ticket, index) => (
             <div
               key={index}
-              className="bg-white w-3/4 rounded-xl h-40 shadow-md flex flex-col justify-center py-4 px-8 duration-200 hover:shadow-lg"
+              className="bg-white w-2/3 rounded-xl h-40 shadow-md flex justify-between items-center pl-6 pr-4 gap-4 duration-200 hover:shadow-lg cursor-pointer"
             >
-              <h1 className="text-xl font-bold mb-2">
-                {ticket.from} ➡ {ticket.to}
-              </h1>
-              <p className="text-sm">
-                <span className="font-semibold">Duration:</span>{" "}
-                {ticket.duration}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold">Price:</span> {ticket.price}
-              </p>
+              <div>
+                <h1 className="text-xl font-bold mb-2">
+                  {ticket.from} ➡ {ticket.to}
+                </h1>
+                <p className="text-sm">
+                  <span className="font-semibold">Duration:</span>{" "}
+                  {ticket.duration}
+                </p>
+                <p className="text-sm">
+                  <span className="font-semibold">Price:</span> {ticket.price}
+                </p>
+              </div>
+              <img
+                src={ticket.image}
+                alt={`${ticket.from} to ${ticket.to}`}
+                className="w-2/5 h-5/6 object-cover bg-center bg-no-repeat rounded-lg"
+              />
             </div>
           ))}
         </div>
+      </div>
+      <div className="h-36 bg-blue-400 w-full mt-12 flex flex-col items-center justify-between py-8 px-16">
+        <div className="flex items-center justify-center gap-x-8">
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <ion-icon
+              name="logo-instagram"
+              className="text-white text-3xl"
+            ></ion-icon>
+          </a>
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+          >
+            <ion-icon
+              name="logo-facebook"
+              className="text-white text-3xl"
+            ></ion-icon>
+          </a>
+          <a
+            href="https://twitter.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Twitter"
+          >
+            <ion-icon
+              name="logo-twitter"
+              className="text-white text-3xl"
+            ></ion-icon>
+          </a>
+          <a
+            href="https://linkedin.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+          >
+            <ion-icon
+              name="logo-linkedin"
+              className="text-white text-3xl"
+            ></ion-icon>
+          </a>
+          <a
+            href="https://youtube.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="YouTube"
+          >
+            <ion-icon
+              name="logo-youtube"
+              className="text-white text-3xl"
+            ></ion-icon>
+          </a>
+        </div>
+        <p className="bg-none text-white">
+          © {new Date().getFullYear()} Kutaisi Tickets. All rights reserved.
+        </p>
       </div>
     </div>
   );
