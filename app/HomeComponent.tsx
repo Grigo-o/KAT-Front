@@ -140,10 +140,11 @@ export default function HomeComponent({
             </h3>
           </div>
           <div
-            className={`bg-white rounded-xl px-8 py-4 w-2/3 flex flex-col transition-all duration-300 ${schedules.length > 0 || (from && to && schedules.length === 0)
+            className={`bg-white rounded-xl px-8 py-4 w-2/3 flex flex-col transition-all duration-300 ${
+              schedules.length > 0 || (from && to && schedules.length === 0)
                 ? "h-auto"
                 : "h-1/3"
-              }`}
+            }`}
           >
             <div className="h-full flex items-center gap-x-4 pt-2 pb-2 w-full">
               {/* Ticket Selection Components */}
@@ -260,9 +261,9 @@ export default function HomeComponent({
                     }
                     onClick={async () => {
                       await handlePurchase();
-                      window.location.href = '/profile';
+                      window.location.href = "/profile";
                     }}
-                    className="bg-orange-500 px-8 disabled:bg-gray-500 text-white flex items-center justify-center h-12 rounded hover:bg-orange-600"
+                    className="bg-orange-500 w-16 disabled:bg-gray-500 text-white flex items-center justify-center h-12 rounded hover:bg-orange-600"
                   >
                     Buy
                   </button>
@@ -279,10 +280,11 @@ export default function HomeComponent({
                   >
                     <button
                       onClick={() => setSchedule(ss)}
-                      className={`flex flex-col items-start p-3 rounded-lg min-w-[200px] ${schedule?.id === ss.id
+                      className={`flex flex-col items-start p-3 rounded-lg min-w-[200px] ${
+                        schedule?.id === ss.id
                           ? "bg-green-500 text-white"
                           : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-                        }`}
+                      }`}
                     >
                       <span className="font-semibold mb-1">{ss.bus_id}</span>
                       <div className="flex items-center gap-2 text-sm">
@@ -303,8 +305,44 @@ export default function HomeComponent({
           </div>
         </div>
       </div>
+      <div className="bg-blue-300 h-32 w-full flex items-center justify-center gap-x-32 py-4 px-6">
+        <div className="flex items-center gap-x-2 h-1/2">
+          <ion-icon
+            name="earth-outline"
+            className="text-white text-5xl h-full"
+          ></ion-icon>
+          <div className="flex flex-col">
+            <p className="font-semibold text-lg text-white">Diverse Choices</p>
+            <p className="text-white text-md">Routes All Over Kutaisi</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-x-2 h-1/2">
+          <ion-icon
+            name="bus-outline"
+            className="text-white text-5xl h-full"
+          ></ion-icon>
+          <div className="flex flex-col">
+            <p className="font-semibold text-lg text-white">The Best Deals</p>
+            <p className="text-white text-md">Save Up To 50%</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-x-2 h-1/2">
+          <ion-icon
+            name="timer-outline"
+            className="text-white text-5xl h-full"
+          ></ion-icon>
+          <div className="flex flex-col">
+            <p className="font-semibold text-lg text-white">
+              Simple and Transperent
+            </p>
+            <p className="text-white text-md">Find Tickets With One Click</p>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-col items-center p-5">
-        <h2 className="text-4xl mb-8 mt-2">Popular Tickets</h2>
+        <h2 className="text-4xl mb-8 mt-2 p-4 px-8 border-b-2 border-blue-300">
+          Popular Routes
+        </h2>
         <div className="flex flex-col items-center w-full gap-y-6">
           {[
             {
