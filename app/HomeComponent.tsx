@@ -258,7 +258,10 @@ export default function HomeComponent({
                     disabled={
                       !price || !total || !from || !to || !date || !schedule
                     }
-                    onClick={handlePurchase}
+                    onClick={async () => {
+                      await handlePurchase();
+                      window.location.href = '/profile';
+                    }}
                     className="bg-orange-500 px-8 disabled:bg-gray-500 text-white flex items-center justify-center h-12 rounded hover:bg-orange-600"
                   >
                     Buy
