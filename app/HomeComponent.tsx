@@ -207,7 +207,10 @@ export default function HomeComponent({
                                 )}
                                 <button
                                     disabled={!price || !total || !from || !to || !date || !schedule}
-                                    onClick={handlePurchase}
+                                    onClick={async () => {
+                                        await handlePurchase();
+                                        window.location.href = '/profile';
+                                    }}
                                     className="bg-green-500 px-10 disabled:bg-gray-500 text-white flex items-center justify-center py-3 mt-2 rounded hover:bg-green-600"
                                 >
                                     Buy

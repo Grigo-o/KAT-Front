@@ -36,7 +36,7 @@ export default function Login() {
 
             // Store the token (choose appropriate storage)
             localStorage.setItem('access_token', token); // Use SessionStorage for shorter sessions if needed
-
+            document.cookie = `access_token=${token}; path=/; max-age=86400; secure; samesite=strict`;
             setMessage("Login successful!");
             router.push("/profile");
         } catch (error) {
