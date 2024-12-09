@@ -140,11 +140,10 @@ export default function HomeComponent({
             </h3>
           </div>
           <div
-            className={`bg-white rounded-xl px-8 py-4 w-2/3 flex flex-col transition-all duration-300 ${
-              schedules.length > 0 || (from && to && schedules.length === 0)
+            className={`bg-white rounded-xl px-8 py-4 w-2/3 flex flex-col transition-all duration-300 ${schedules.length > 0 || (from && to && schedules.length === 0)
                 ? "h-auto"
                 : "h-1/3"
-            }`}
+              }`}
           >
             <div className="h-full flex items-center gap-x-4 pt-2 pb-2 w-full">
               {/* Ticket Selection Components */}
@@ -277,13 +276,17 @@ export default function HomeComponent({
                   >
                     <button
                       onClick={() => setSchedule(ss)}
-                      className={`px-4 py-1 rounded ${
-                        schedule?.id === ss.id
+                      className={`flex flex-col items-start p-3 rounded-lg min-w-[200px] ${schedule?.id === ss.id
                           ? "bg-green-500 text-white"
-                          : "bg-gray-200 text-gray-600"
-                      }`}
+                          : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                        }`}
                     >
-                      {ss.arrival_time}-{ss.departure_time}
+                      <span className="font-semibold mb-1">{ss.bus_id}</span>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span>🚌 {ss.departure_time}</span>
+                        <span>➡</span>
+                        <span>🏁 {ss.arrival_time}</span>
+                      </div>
                     </button>
                   </div>
                 ))}
