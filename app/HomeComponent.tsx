@@ -215,8 +215,7 @@ export default function HomeComponent({
                             </div>
                         </div>
                         {schedules.length > 0 && (
-                            <div className="border-t pt-6 pb-4 flex items-center gap-4 flex-wrap ">
-                                {/* put buttons here to choose schedule */}
+                            <div className="border-t pt-6 pb-4 flex items-center gap-4 flex-wrap">
                                 {schedules.map((ss, index) => (
                                     <div
                                         key={ss.id}
@@ -224,13 +223,21 @@ export default function HomeComponent({
                                     >
                                         <button
                                             onClick={() => setSchedule(ss)}
-                                            className={`px-4 py-1 rounded ${schedule?.id === ss.id ? "bg-green-500 text-white" : "bg-gray-200 text-gray-600"
-                                                }`}
+                                            className={`flex flex-col items-start p-3 rounded-lg min-w-[200px] ${
+                                                schedule?.id === ss.id 
+                                                    ? "bg-green-500 text-white" 
+                                                    : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                                            }`}
                                         >
-                                            {ss.arrival_time}-{ss.departure_time}
+                                            <span className="font-semibold mb-1">{ss.bus_id}</span>
+                                            <div className="flex items-center gap-2 text-sm">
+                                                <span>🚌 {ss.departure_time}</span>
+                                                <span>➡</span>
+                                                <span>🏁 {ss.arrival_time}</span>
+                                            </div>
                                         </button>
                                     </div>
-                                ))} 
+                                ))}
                             </div>
                         )}
                         {from && to && date && schedules.length === 0 && (

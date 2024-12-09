@@ -8,6 +8,7 @@ type PlaceLocation = {
 }
 
 type Schedule = {
+    [x: string]: string;
     id: number;
     bus_id: number;
     route_id: number;
