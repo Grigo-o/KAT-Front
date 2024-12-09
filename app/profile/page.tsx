@@ -6,6 +6,7 @@ import ProfileComponent from "./ProfileComponent"
 export default async function Profile() {
     const c = await cookies()
     const token = c.get('access_token')?.value
+    console.log(token + " is the token")
     
     if (!token) {
         redirect('/login')

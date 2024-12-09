@@ -12,6 +12,8 @@ export default function LogoutButton() {
             // Clear client-side storage
             localStorage.removeItem('access_token');
             localStorage.removeItem('user_id');
+            // delete cookies
+            document.cookie = `access_token=; path=/; max-age=0; secure; samesite=strict`;
             
             // Clear server-side cookie
             await httpClient.post('/logout');
