@@ -104,7 +104,7 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-xl shadow-md w-full max-w-md"
       >
-        <h1 className="text-2xl font-bold mb-4">Register</h1>
+        <h1 className="text-3xl mb-4">Register</h1>
         <div className="mb-4">
           <label className="block mb-1 text-sm font-medium">Email</label>
           <input
