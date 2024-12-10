@@ -8,21 +8,21 @@ export default function Navbar() {
   const pathname = usePathname();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // const navItems = [
-  //   { name: "Home", icon: "home-outline", href: "/" },
-  //   { name: "Profile", icon: "person-outline", href: "/profile" },
-  //   { name: "Contact", icon: "chatbubble-outline", href: "/messages" },
-  //   { name: "Log In", icon: "log-in-outline", href: "/login" },
-  //   { name: "Register", icon: "person-add-outline", href: "/register" },
-  // ];
-
   const navItems = [
-    { name: "Home", href: "/" },
-    { name: "Profile", href: "/profile" },
-    { name: "Contact", href: "/messages" },
-    { name: "Log In", href: "/login" },
-    { name: "Register", href: "/register" },
+    { name: "Home", icon: "home-outline", href: "/" },
+    { name: "Profile", icon: "person-outline", href: "/profile" },
+    { name: "Contact", icon: "chatbubble-outline", href: "/messages" },
+    { name: "Log In", icon: "log-in-outline", href: "/login" },
+    { name: "Register", icon: "person-add-outline", href: "/register" },
   ];
+
+  // const navItems = [
+  //   { name: "Home", href: "/" },
+  //   { name: "Profile", href: "/profile" },
+  //   { name: "Contact", href: "/messages" },
+  //   { name: "Log In", href: "/login" },
+  //   { name: "Register", href: "/register" },
+  // ];
 
   useEffect(() => {
     const currentIndex = navItems.findIndex((item) => item.href === pathname);
@@ -31,7 +31,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* 
       <div className="navigation">
         <ul>
           {navItems.map((item, index) => (
@@ -55,11 +54,10 @@ export default function Navbar() {
             }}
           ></div>
         </ul>
-      </div> 
-      */}
+      </div>
 
       {/* Simple Text Navbar */}
-      <nav className="w-full flex justify-center">
+      {/* <nav className="w-full flex justify-center">
         <ul className="flex w-1/2 items-center justify-between">
           {navItems.map((item, index) => (
             <li key={index}>
@@ -74,7 +72,7 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
-      </nav>
+      </nav> */}
     </>
   );
 }
